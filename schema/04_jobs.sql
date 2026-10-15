@@ -229,3 +229,13 @@ ALTER TABLE candidate_bookmark ADD CONSTRAINT fk_candidate_bookmark_job_requirem
     FOREIGN KEY (job_requirement_id) REFERENCES job_requirement (id);
 ALTER TABLE referral ADD CONSTRAINT fk_referral_job_requirement_id
     FOREIGN KEY (job_requirement_id) REFERENCES job_requirement (id);
+
+-- FK indexes added by Milestone 2 validation (B7)
+CREATE INDEX idx_job_requirement_posted_by_user_id ON job_requirement (posted_by_user_id);
+CREATE INDEX idx_job_requirement_questionnaire_id ON job_requirement (questionnaire_id) WHERE questionnaire_id IS NOT NULL;
+CREATE INDEX idx_questionnaire_organisation_id ON questionnaire (organisation_id);
+CREATE INDEX idx_questionnaire_question_questionnaire_id ON questionnaire_question (questionnaire_id);
+CREATE INDEX idx_question_option_questionnaire_question_id ON question_option (questionnaire_question_id);
+CREATE INDEX idx_application_answer_questionnaire_question_id ON application_answer (questionnaire_question_id);
+CREATE INDEX idx_interview_interviewer_user_id ON interview (interviewer_user_id) WHERE interviewer_user_id IS NOT NULL;
+CREATE INDEX idx_application_sourcing_request_id ON application (sourcing_request_id) WHERE sourcing_request_id IS NOT NULL;

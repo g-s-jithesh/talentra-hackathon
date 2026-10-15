@@ -293,3 +293,19 @@ CREATE TABLE referral (
 CALL add_standard_columns('referral', 'hard');
 CREATE UNIQUE INDEX uq_referral_referrer_email_job
     ON referral (referrer_user_id, referred_email, coalesce(job_requirement_id, 0));
+
+-- FK indexes added by Milestone 2 validation (B5). FKs to lookup / master-data
+-- tables stay unindexed on purpose: those rows are deactivated, never deleted.
+CREATE INDEX idx_candidate_address_candidate_profile_id ON candidate_address (candidate_profile_id);
+CREATE INDEX idx_identity_verification_user_id ON identity_verification (user_id);
+CREATE INDEX idx_candidate_experience_organisation_id ON candidate_experience (organisation_id) WHERE organisation_id IS NOT NULL;
+CREATE INDEX idx_profile_project_candidate_profile_id ON profile_project (candidate_profile_id) WHERE candidate_profile_id IS NOT NULL;
+CREATE INDEX idx_profile_project_gig_worker_profile_id ON profile_project (gig_worker_profile_id) WHERE gig_worker_profile_id IS NOT NULL;
+CREATE INDEX idx_assessment_attempt_assessment_id ON assessment_attempt (assessment_id);
+CREATE INDEX idx_course_enrolment_candidate_profile_id ON course_enrolment (candidate_profile_id);
+CREATE INDEX idx_profile_view_event_viewer_organisation_id ON profile_view_event (viewer_organisation_id, viewed_at DESC);
+CREATE INDEX idx_profile_view_event_viewer_user_id ON profile_view_event (viewer_user_id);
+CREATE INDEX idx_candidate_bookmark_candidate_profile_id ON candidate_bookmark (candidate_profile_id);
+CREATE INDEX idx_candidate_bookmark_organisation_id ON candidate_bookmark (organisation_id, job_requirement_id) WHERE deleted_at IS NULL;
+CREATE INDEX idx_referral_referred_user_id ON referral (referred_user_id) WHERE referred_user_id IS NOT NULL;
+CREATE INDEX idx_referral_job_requirement_id ON referral (job_requirement_id) WHERE job_requirement_id IS NOT NULL;
